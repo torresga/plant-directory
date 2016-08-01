@@ -1,6 +1,11 @@
-var knexfile = require('./knexfile.js').development; 
-var knex = require('knex')(knexfile);
+require('dotenv').config();
 
-var bookshelf = require("bookshelf")(knex);
+var config      = require('../../knexfile.js');
+var env         = process.env.environment || 'development';
+var knex        = require('knex')(config[env]);
+var bookshelf   = module.exports = require('bookshelf')(knex);
 
-module.exports = bookshelf; 
+knex.migrate.latest([config]);
+
+module.exports = bookshelf;
+
