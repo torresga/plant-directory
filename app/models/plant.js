@@ -17,4 +17,5 @@ module.exports = db.Model.extend({
       "photoUrl: ", this.attributes.photoUrl, ", ",
       "type: ", this.attributes.type, ", "
     ].join("");
+  }
 });
