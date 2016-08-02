@@ -1,0 +1,21 @@
+extends ./layout.pug
+
+table
+  tr
+    th ID
+    th Name
+    th Common Name
+    th Family
+    th Coordinates
+    th Photo
+    th type
+each plant in plants
+  tr
+    td= plant.id
+    td= plant.name
+    td= plant.commonName
+    td= plant.family
+    td= plant.coordinates
+    td= plant.photo
+    td= plant.type
+    

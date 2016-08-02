@@ -1,0 +1,27 @@
+extends ../layout.pug
+
+block content
+  h1 Create New Plant
+  form(action="/plants", method="post")
+    div.input
+      span.label Plant
+      select(name="plant_id")
+        each plant in plants
+          option(value=plant.id)= plant.name
+    div.input
+      span.label Common Name
+      input(type="text", name="commonName")
+    div.input
+      span.label Family
+      input(type="text", name="family")
+    div.input
+      span.label Coordinates
+      input(type="text" name="coordinates")
+    div.input
+      span.label Photo
+      input(type="text" name="photo")
+    div.input
+      span.label Type
+      input(type="text" name="type")
+    div.actions
+      input(type="submit", value="Create new plant")
