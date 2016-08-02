@@ -1,28 +1,51 @@
-var express = require("express");
-var path = require("path");
-var routes = require("./routes/index");
+(function() {
 
-var app = express();
-app.set("views", path.join(__dirname, "app", "views"));
-app.set("view engine", "ejs");
-app.use("/", routes);
+  var pug = require('pug');
+  var express = require('express');
+  var bodyParser = require('body-parser');
 
-app.get("/", function(req, res) {
-  res.render("index");
-});
+  var app = express();
 
-app.get("/results", function(req, res) {
-  res.render("results");
-});
+  var User = require('./app/models/user');
 
-app.get("/plant", function(req, res) {
-  res.render("plant");
-});
+  app.set('view engine', 'pug');
+  app.set('views', './app/views');
+  app.use(express.static('public'));
+  app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(express.static("public"));
+  var sessionInfo = {
+    current_user: null
+  }
 
-app.listen(3000, function(){
-  console.log("Listening on port 3000");
-});
+  var session = function(req, res, cb) {
+    req.sessionInfo = sessionInfo;
+    cb();
+  };
 
-module.exports = app;
+  // routes
+  app.get('/', function(req, res) {
+    res.render('index', sessionInfo);
+  });
+
+  app.post('/sessions', function(req, res) {
+    res.redirect(201, '/');
+  });
+
+  var plantsController = require('./app/controllers/plants');
+
+  app.get('/plants/new', function(req, res) {
+    plantsController.newAction(req, res, sessionInfo);
+  });
+
+  app.post('/plants', function(req, res) {
+    plantsController.createAction(req, res, sessionInfo);
+  });
+
+  app.get('/plants', function(req, res) {
+    plantsController.indexAction(req, res, sessionInfo);
+  });
+
+  console.log("App is listening on localhost:4000");
+  app.listen(4000);
+
+}());
